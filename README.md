@@ -11,6 +11,6 @@ I also used a Cumulative Distribution Function to determine the probability of k
 
 I then graphed out these functions as such:
 
-<img width="774"  src="https://github.com/thomas211738/Coin_flip_probabilities/assets/109131481/b4c530d8-f845-40cf-9395-e7dba2e7a5e2">
+<img width="774"  src="Graph 1.png">
 
 
