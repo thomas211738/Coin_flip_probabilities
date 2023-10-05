@@ -10,6 +10,7 @@ To answer this question, I used the binomial distribution to calculate the proba
 I also used a Cumulative Distribution Function to determine the probability of k or less successes. 
 
 Here is an example:
+
 <img width="774"  src="Code.png">
 
 I then graphed out the binomial distribution:
