@@ -1,12 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import math
+import scipy.stats as stats
 
 # Binomial Distribution
 # Formula: P(X=x)= (n choose k) * P^x * (1 - P)^(n - x)
 #
 # Edit this and see the results
-flips = 432 # Flipping a coin 100 times
-heads = 209 # Number of Heads in the number of flips
+flips = 100 # Flipping a coin 100 times
+heads = 50 # Number of Heads in the number of flips
 
 def Binomial_Distribution(flips, heads):
     
@@ -31,27 +33,32 @@ def Cumulative_Distribution_Function(flips, heads):
         cumulative_probability += n_choose_k * p_pow_k * q_pow_r
     
     p_value = cumulative_probability
-    
-#     if flips/2 < heads:
-#         p_value = 1 - cumulative_probability
     return p_value
+def standard_deviation(flips,mean):
+    equation = 0
+    for i in range(1,flips+1):
+        equation += (i - mean) * (i - mean)
+    equation = math.sqrt(equation)    
+    equation = equation / (flips - 1)    
+    return equation
 
 x = []
 y = []
 y2 = []
 
 # Calculating P-Values all number of heads
-for i in range(flips + 1):
+for i in range(flips+1):
     x.append(i)
     y.append(Cumulative_Distribution_Function(flips, i))
     y2.append(Binomial_Distribution(flips, i))
-    
-sig = [x > 0.05 and x < 0.95 for x in y]    
-selected_values = [value for value, is_true in zip(x, sig) if is_true]
 
-y3 = np.array(y2)
-mu = round(np.mean(y3),2)
-sigma = round(np.std(y3),2)
+
+sig = [x > 0.05 and x < 0.95 for x in y]
+selected_values = [value for value, is_true in zip(x, sig) if is_true]
+mu = flips * 0.5
+sigma = round(standard_deviation(flips,mu),3)
+z_score = round((heads - mu) / sigma,2)
+p_value = round(1 - stats.norm.cdf(z_score),5)
 
 
 #Plotting
@@ -73,7 +80,7 @@ ax[1].set_xlabel('Number of Heads (n)')
 ax[1].set_ylabel('Probability')
 ax[1].set_title(f'Probability of Number of heads given {flips} flips')
 ax[1].axvline(x=selected_values[0], color='g', linestyle='--',label = f'x = {selected_values[0]}')
-ax[1].axvline(x=selected_values[-1], color='g', linestyle='--',label = f'x = {selected_values[-1]}')
+ax[1].axvline(x=(selected_values[-1]), color='g', linestyle='--',label = f'x = {selected_values[-1]}')
 
 ax[0].legend(loc='upper left', bbox_to_anchor=(1, 1))
 ax[1].legend(loc='upper left', bbox_to_anchor=(1, 1))
@@ -84,7 +91,10 @@ probability2 = round(100 * y2[heads - 1],2)
 
 print(f'Probability of {heads} or less heads in {flips} flips is {probability}%')
 print(f'Probability of exactly {heads} in {flips} flips is {probability2}%')
-print(f'Mean for graph 2: {mu}')
-print(f'Standard Deviation for graph 2: {sigma}')
+print(f'Mean: {mu}')
+print(f'Standard Deviation: {sigma}')
+print("Z-Score:", z_score)
+print("P-value:", p_value)
+
 
       
